@@ -2,7 +2,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import { useState } from "react";
 
-type VisibilityPasswordProps = {
+interface VisibilityPasswordProps {
     onToggle: (visible: boolean) => void;
 };
 

@@ -18,14 +18,16 @@ export default function RegisterForm() {
     } = useForm<RegisterSchema>({
         resolver: zodResolver(registerSchema),
     });
-
-    const [visiblePassword, setVisiblePassword] = useState(false);
-    const [visibleConfirmPassword, setVisibleConfirmPassword] = useState(false);
-
+    
     const onSubmit = (data: RegisterSchema) => {
         console.log("Dados enviados:", data);
         router.push('verify-email');
     };
+
+    // Estados para mudar a visibilidade dos inputs de senha
+    const [visiblePassword, setVisiblePassword] = useState(false);
+    const [visibleConfirmPassword, setVisibleConfirmPassword] = useState(false);
+
 
     return (
         <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>

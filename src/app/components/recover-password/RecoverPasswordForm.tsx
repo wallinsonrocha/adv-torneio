@@ -2,12 +2,17 @@
 import { recoverPassword } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 type RecoverPasswordSchema = z.infer<typeof recoverPassword>;
 
-export default function RecoverPasswordForm() {
+interface VisibilityPasswordProps {
+    onToggle: (visible: boolean) => void;
+};
+
+export default function RecoverPasswordForm({onToggle}: VisibilityPasswordProps) {
     const {
             register,
             handleSubmit,
@@ -18,6 +23,7 @@ export default function RecoverPasswordForm() {
     
         const onSubmit = (data: RecoverPasswordSchema) => {
             console.log("Dados enviados:", data);
+            onToggle(true);
         };
 
     return (
@@ -33,7 +39,7 @@ export default function RecoverPasswordForm() {
                         {...register("email")}
                         type="email"
                         className={clsx("block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer",
-                            errors ? "border-red-500" : "border-gray-300"
+                            errors.email ? "border-red-500" : "border-gray-300"
                         )}
                         placeholder=" "
                     />

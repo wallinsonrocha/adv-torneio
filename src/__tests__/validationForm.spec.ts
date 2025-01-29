@@ -1,4 +1,4 @@
-import { loginSchema, registerSchema, passwordSchema, recoverPassword } from '@/lib/validation';
+import { loginSchema, registerSchema, passwordSchema, recoverPassword, changePassword } from '@/lib/validation';
 import { z } from 'zod';
 
 
@@ -134,7 +134,7 @@ describe('Password Schema', () => {
     });
 });
 
-describe.only('Recover Password', () => {
+describe('Recover Password', () => {
     it('shold return error if wrong email', () => {
         const wrongEmail = {email: 'email@em.'};
         expect(() => recoverPassword.parse(wrongEmail)).toThrow('E-mail inválido');
@@ -143,5 +143,14 @@ describe.only('Recover Password', () => {
     it('shold return success if right email', () => {
         const wrongEmail = {email: 'email@email.com'};
         expect(() => recoverPassword.parse(wrongEmail)).not.toThrow();
+    })
+
+    it('shold return erro if confirm password is invalid', ()=>{
+        const data = {
+            password: "@Senha123",
+            confirmPassword: "@Senha124"
+        }        
+
+        expect(()=>changePassword.parse(data)).toThrow('As senhas não coincidem');
     })
 })

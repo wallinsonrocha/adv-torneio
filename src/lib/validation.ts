@@ -28,6 +28,15 @@ export const recoverPassword = z.object({
     email: z.string().email("E-mail inválido").nonempty("O e-mail é obrigatório"),
 })
 
+// Mudar senha
+export const changePassword = z.object({
+    password: passwordSchema,
+    confirmPassword: passwordSchema
+}).refine((data)=> data.password === data.confirmPassword, {
+    message: "As senhas não coincidem",
+    path: ["confirmPassword"]
+})
+
 // Validação para o formulário de registro
 export const registerSchema = z.object({
     fullName: z.string().min(3, "O nome completo deve ter pelo menos 3 caracteres").nonempty("O nome completo é obrigatório"),

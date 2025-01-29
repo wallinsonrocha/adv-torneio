@@ -1,4 +1,4 @@
-### 1. **Telas de Autenticação e Cadastro**
+### 1. **Telas de Autenticação e Cadastro - OK**
    - **Tela de Login**: Onde os advogados farão login com email e senha.
    - **Tela de Cadastro**: Onde os advogados se cadastrarão fornecendo nome, email, senha e código exclusivo.
    - **Tela de Recuperação de Senha**: Para permitir que os usuários recuperem suas senhas via email.
