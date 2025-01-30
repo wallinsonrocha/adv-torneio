@@ -23,3 +23,7 @@ body {
 h2{
   font-size: 38px;
 }
+
+h5 {
+  @apply text-2xl
+}

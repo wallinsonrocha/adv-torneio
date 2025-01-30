@@ -1,11 +1,4 @@
 'use client'
-import { changePassword } from "@/lib/validation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import VisibilityPassword from "../components/enter/VisibilityPassword";
-import clsx from "clsx";
-import { useState } from "react";
 import ChangePasswordForm from "../components/recover-password/ChangePassword";
 
 export default function ChangePassWord() {

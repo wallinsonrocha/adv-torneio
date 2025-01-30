@@ -2,7 +2,6 @@
 import { recoverPassword } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
