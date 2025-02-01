@@ -7,7 +7,7 @@ export default function CardTorneio() {
         <div className="flex flex-col max-w-sm bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl">
             {/* Imagem e status do torneio */}
             <div className="w-full min-h-60 relative">
-                <p className="absolute font-bold text-xs p-1 px-2 rounded-md bg-green-300 top-3 right-3">Inscrições abertas até 28/04</p>
+                <p className="absolute z-10 font-bold text-xs p-1 px-2 rounded-md bg-green-300 top-3 right-3">Inscrições abertas até 28/04</p>
                 <Image fill className="object-cover" src="next.svg" alt="Card" />
             </div>
             {/* Informações do torneio */}
@@ -19,8 +19,16 @@ export default function CardTorneio() {
                 <hr className="mt-4" />
                 {/* Informações */}
                 <div className="flex w-full justify-between">
-                    <p>Times: <span className="font-bold">0/12</span></p>
-                    <p className="font-bold">01/05 - 20/05</p>
+                    {/* Times */}
+                    <div className="flex gap-2">
+                        <Image src='icons/torneios/teams.svg' width={16} height={16} alt="Icone de time" />
+                        <p>Times: <span className="font-bold">0/12</span></p>
+                    </div>
+                    {/* Duração */}
+                    <div className="flex gap-2">
+                        <Image src='icons/torneios/calendar.svg' width={16} height={16} alt="Iconde de calendario" />
+                        <p className="font-bold">01/05 - 20/05</p>
+                    </div>
                 </div>
                 <Link href="#" className="flex w-fit items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
                     <p>Saiba mais</p>

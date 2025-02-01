@@ -1,6 +1,7 @@
 import SearchBar from "@/app/components/search-bar/SearchBar";
 import CardTorneio from "@/app/components/torneios/CardTorneio";
 
+// Ainda falta configurar as props para receber as informações e o roteamento
 export default function ListTournament() {
     return (
         <section className="flex flex-col items-center p-6 bg-gray-100 min-h-screen">
