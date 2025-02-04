@@ -9,7 +9,7 @@ interface MatchProps {
   };
 }
 
-const MatchCard: React.FC<MatchProps> = ({ match }) => {
+export default function MatchCard({match}: MatchProps) {
   return (
     <div className="p-4 bg-gray-100 rounded-lg shadow-md">
       {/* MatchDateStatus */}
@@ -47,5 +47,3 @@ const MatchCard: React.FC<MatchProps> = ({ match }) => {
     </div>
   );
 };
-
-export default MatchCard;

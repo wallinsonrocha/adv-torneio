@@ -9,15 +9,6 @@ import { useParams } from "next/navigation";
 
 const urlEnv = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-// Mock APi mirage
-import { makeServer } from "@/mocks/handlers";
-
-if (process.env.NODE_ENV === "development") {
-    console.log("🚀 MirageJS iniciado!");
-    makeServer({ environment: "development" })
-}
-
-
 export default function InfoTournament() {
     const [tab, setTab] = useState("teams"); // Controle de abas (times / partidas)
     const [tournament, setTournament] = useState<any>(null); // Estado para armazenar o torneio
@@ -115,6 +106,7 @@ export default function InfoTournament() {
             {/* Conteúdo das abas */}
             <div className="mt-6">
                 {tab === "teams" ? (
+                    // Times dentro do torneio
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {tournament.timesParticipantes?.length > 0 ? (
                             tournament.timesParticipantes.map((team: any, index: number) => (
@@ -125,6 +117,7 @@ export default function InfoTournament() {
                         )}
                     </div>
                 ) : (
+                    // Partidas que ocorreram e agendadas
                     <div className="space-y-4">
                         {tournament.partidas.length > 0 ? (
                             tournament.partidas.map((match: any, index: any) => (

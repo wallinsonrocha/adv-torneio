@@ -18,10 +18,10 @@ export function makeServer({ environment = "development" } = {}) {
           return `Torneio ${i + 1} - ${faker.lorem.words(3)}`;
         },
         dataInicio() {
-          return faker.date.past().toISOString().split("T")[0];
+          return faker.date.past().toISOString().split("T")[0].replace(/-/g, "/");
         },
         dataTermino() {
-          return faker.date.future().toISOString().split("T")[0];
+          return faker.date.future().toISOString().split("T")[0].replace(/-/g, "/");
         },
         status() {
           const statuses = ["Em andamento", "Inscrições abertas", "Finalizada"];
@@ -49,13 +49,15 @@ export function makeServer({ environment = "development" } = {}) {
             id: faker.string.uuid(),
             team1: {
               teamName: teams[i]?.teamName,
-              imgTeam: teams[i]?.imgTeam
+              imgTeam: teams[i]?.imgTeam,
+              score: Math.floor(Math.random() * 11)
             },
             team2: {
               teamName: teams[(i + 1) % teams.length]?.teamName,
               imgTeam: teams[(i + 1) % teams.length]?.imgTeam,
+              score: Math.floor(Math.random() * 11)
             },
-            data: faker.date.soon().toISOString(),
+            data: faker.date.soon().toISOString().split("T")[0].replace(/-/g, "/")
           }));
         },
       }),
