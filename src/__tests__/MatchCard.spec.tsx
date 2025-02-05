@@ -2,7 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import MatchCard from "@/app/components/torneios/match/MatchCard";
 
 // Teste para verificar se os dados são renderizados corretamente
-it("deve renderizar as informações da partida corretamente", async () => {
+it("deve renderizar as informações da partida corretamente", () => {
   // Mock de resposta do fetch
   let match = {
       data: "2025-02-01",

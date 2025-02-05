@@ -25,9 +25,8 @@ export default function InfoTournament() {
                 const response = await fetch(url, {
                     method: "GET",
                     headers: {
-                        "Content-Type": "application/json",
-                        // Authorization: `Bearer ${token}`,
-                    },
+                        "Content-Type": "application/json",                        
+                    },                    
                 });
 
                 if (!response.ok) {
