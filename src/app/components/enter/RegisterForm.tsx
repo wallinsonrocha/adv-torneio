@@ -2,10 +2,12 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { registerSchema } from "@/lib/validation"; // Supondo que você já tenha um schema definido
+import { registerSchema } from "@/lib/validation";
 import React, { useState } from "react";
 import clsx from "clsx";
 import VisibilityPassword from "./VisibilityPassword";
+
+const urlEnv = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 type RegisterSchema = z.infer<typeof registerSchema>;
 
@@ -18,15 +20,37 @@ export default function RegisterForm() {
     } = useForm<RegisterSchema>({
         resolver: zodResolver(registerSchema),
     });
-    
-    const onSubmit = (data: RegisterSchema) => {
-        console.log("Dados enviados:", data);
-        router.push('verify-email');
+
+    const onSubmit = async (data: RegisterSchema) => {
+        // Envio para registrar conta
+        const url = `${urlEnv}/api/auth/register`;
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data)
+            });
+            if (!response.ok) {
+                const dataResponse = await response.json();
+                setErrorMessage(dataResponse.error || "Erro desconhecido");
+            } else {
+                setErrorMessage("");
+                const dataResponse = await response.json();                
+                // localStorage.setItem('token', dataResponse.token);
+                router.push('/verify-email');
+            }
+        } catch (error) {
+            setErrorMessage("Erro de conexão. Tente novamente.");
+            console.error("Erro de autenticação:", error);
+        }
     };
 
     // Estados para mudar a visibilidade dos inputs de senha
     const [visiblePassword, setVisiblePassword] = useState(false);
     const [visibleConfirmPassword, setVisibleConfirmPassword] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string>("");
 
 
     return (
@@ -39,6 +63,7 @@ export default function RegisterForm() {
             <div>
                 <div className="relative">
                     <input
+                        data-testid="name-reg"
                         {...register("fullName")}
                         type="text"
                         className={clsx("block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer",
@@ -54,6 +79,7 @@ export default function RegisterForm() {
             <div>
                 <div className="relative">
                     <input
+                        data-testid="email-reg"
                         {...register("email")}
                         type="email"
                         className={clsx("block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer",
@@ -69,6 +95,7 @@ export default function RegisterForm() {
             <div>
                 <div className="relative">
                     <input
+                        data-testid="oabcode-reg"
                         {...register("oabCode")}
                         type="text"
                         className={clsx("block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer",
@@ -84,6 +111,7 @@ export default function RegisterForm() {
             <div>
                 <div className="relative">
                     <input
+                        data-testid="password-reg"
                         {...register("password")}
                         type={clsx(visiblePassword ? "text" : "password")}
                         className={clsx("block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer",
@@ -101,6 +129,7 @@ export default function RegisterForm() {
             <div>
                 <div className="relative">
                     <input
+                        data-testid="passwordConfirm-reg"
                         {...register("confirmPassword")}
                         type={clsx(visibleConfirmPassword ? "text" : "password")}
                         className={clsx("block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer",
@@ -114,6 +143,10 @@ export default function RegisterForm() {
                 </div>
                 {errors.confirmPassword && <span className="text-red-500 text-sm">{errors.confirmPassword.message}</span>}
             </div>
+
+            {/* Exibe mensagem de erro global */}
+            {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+
             <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
                 Criar conta
             </button>

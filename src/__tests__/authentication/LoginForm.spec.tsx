@@ -16,9 +16,7 @@ beforeEach(() => {
     server = makeServer({ environment: "test" });
     server.db.loadData({
         users: [
-            { id: "1", role: "user", email: "user@email.com", password: "@Senha123" },
-            { id: "2", role: "captain", email: "captain@email.com", password: "654321" },
-            { id: "3", role: "admin", email: "admin@email.com", password: "admin123" },
+            { id: "1", role: "user", email: "user@email.com", password: "@Senha123" },            
         ],
     });
 

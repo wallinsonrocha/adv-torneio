@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import MatchCard from "@/app/components/torneios/match/MatchCard";
+import MatchCard from "@/app/components/torneios/MatchCard";
 
 // Teste para verificar se os dados são renderizados corretamente
 it("deve renderizar as informações da partida corretamente", () => {

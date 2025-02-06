@@ -16,7 +16,7 @@ export default function TeamCardTourn({ props }: TeamCardProp) {
 
     return (
         <>
-            <div className="flex items-center p-4 bg-gray-100 rounded-lg shadow-md">
+            <div data-testid="team-card" className="flex items-center p-4 bg-gray-100 rounded-lg shadow-md">
                 <img className="max-w-12" src={props.imgTeam} alt="Time" />
                 {/* Time */}
                 <div className="ml-4">

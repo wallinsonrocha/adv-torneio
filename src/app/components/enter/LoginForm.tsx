@@ -40,7 +40,8 @@ export default function LoginForm() {
                 setErrorMessage(dataResponse.error || "Erro desconhecido");
             } else {
                 setErrorMessage("");
-                const dataResponse = await response.json();                
+                const dataResponse = await response.json();           
+                localStorage.setItem('token', dataResponse.token);
                 route.push('/torneios');
             }
         } catch (error) {            

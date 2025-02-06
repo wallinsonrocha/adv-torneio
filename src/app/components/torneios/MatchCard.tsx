@@ -11,7 +11,7 @@ interface MatchProps {
 
 export default function MatchCard({match}: MatchProps) {
   return (
-    <div className="p-4 bg-gray-100 rounded-lg shadow-md">
+    <div data-testid="match-card" className="p-4 bg-gray-100 rounded-lg shadow-md">
       {/* MatchDateStatus */}
       <div>
         <div className="flex gap-2">

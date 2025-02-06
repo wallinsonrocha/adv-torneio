@@ -3,15 +3,16 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import TeamCardTourn from "@/app/components/torneios/teams/TeamCardTourn";
-import MatchCard from "@/app/components/torneios/match/MatchCard";
+import TeamCardTourn from "@/app/components/torneios/TeamCardTourn";
+import MatchCard from "@/app/components/torneios/MatchCard";
 import { useParams } from "next/navigation";
+import Ranking from "@/app/components/torneios/Raking";
 
 const urlEnv = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default function InfoTournament() {
-    const [tab, setTab] = useState("teams"); // Controle de abas (times / partidas)
-    const [tournament, setTournament] = useState<any>(null); // Estado para armazenar o torneio
+    const [tab, setTab] = useState("teams"); // Controle de abas (times / partidas / ranking)
+    const [tournament, setTournament] = useState<any>(null); // Estado para armazenar o torneio    
     const [loading, setLoading] = useState(true);
     const params = useParams();
 
@@ -20,8 +21,6 @@ export default function InfoTournament() {
         const fetchTournament = async () => {
             try {
                 const url = `${urlEnv}/api/torneios/${params.id}`;
-                // const token = "fake-token";
-
                 const response = await fetch(url, {
                     method: "GET",
                     headers: {
@@ -34,17 +33,17 @@ export default function InfoTournament() {
                 }
 
                 const data = await response.json();
-                console.log("Aqui está: ",data)
+                console.log(data)
                 setTournament(data);
             } catch (error) {
-                console.error("Erro ao buscar torneio:", error);
+                console.error("Erro ao buscar torneio.", error);
             } finally {
                 setLoading(false);
             }
         };
 
         fetchTournament();
-    }, [params]);
+    }, [params]);    
 
     if (loading) {
         return <p className="text-center text-gray-600">Carregando torneio...</p>;
@@ -58,23 +57,19 @@ export default function InfoTournament() {
         <section className="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-lg">
             {/* Informações do torneio */}
             <div className="bg-blue-50 p-5 rounded-lg shadow-md">
-                {/* Nome do torneio */}
                 <div className="flex gap-2">
                     <Image src="/icons/torneios/trophy.svg" width={50} height={50} alt="Ícone do troféu" />
                     <h1 className="font-bold text-gray-900">{tournament.nome}</h1>
                 </div>
                 <div className="my-2 grid md:grid-cols-2 gap-4 text-gray-700">
-                    {/* Quantidade de times inscritos */}
                     <div className="flex gap-2 h-fit">
                         <Image src="/icons/torneios/teams.svg" width={16} height={16} alt="Ícone de time" />
                         <p>Times: <strong>{tournament.timesParticipantes?.length || 0}/{tournament.playersLimit}</strong></p>
                     </div>
-                    {/* Duração do torneio */}
                     <div className="flex gap-2 h-fit">
                         <Image src="/icons/torneios/calendar.svg" width={16} height={16} alt="Ícone de calendário" />
                         <p>Duração: <strong>{tournament.dataInicio} - {tournament.dataTermino}</strong></p>
                     </div>
-                    {/* Status */}
                     <div className="flex gap-2 h-fit">
                         <Image src="/icons/torneios/status.svg" width={16} height={16} alt="Ícone de status" />
                         <p>Status: <strong>{tournament.status}</strong></p>
@@ -100,12 +95,17 @@ export default function InfoTournament() {
                 >
                     Partidas
                 </button>
+                <button
+                    className={`pb-2 text-lg font-medium ${tab === "ranking" ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-500"}`}
+                    onClick={() => setTab("ranking")}
+                >
+                    Ranking
+                </button>
             </div>
 
             {/* Conteúdo das abas */}
             <div className="mt-6">
                 {tab === "teams" ? (
-                    // Times dentro do torneio
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {tournament.timesParticipantes?.length > 0 ? (
                             tournament.timesParticipantes.map((team: any, index: number) => (
@@ -115,8 +115,7 @@ export default function InfoTournament() {
                             <p className="text-gray-600">Nenhum time inscrito.</p>
                         )}
                     </div>
-                ) : (
-                    // Partidas que ocorreram e agendadas
+                ) : tab === "matches" ? (
                     <div className="space-y-4">
                         {tournament.partidas.length > 0 ? (
                             tournament.partidas.map((match: any, index: any) => (
@@ -126,6 +125,8 @@ export default function InfoTournament() {
                             <p className="text-gray-600">Nenhuma partida agendada.</p>
                         )}
                     </div>
+                ) : (
+                    <Ranking tournamentData={tournament.timesParticipantes} />
                 )}
             </div>
 

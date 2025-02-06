@@ -19,6 +19,19 @@ export function authRoutes(server) {
     return { token: fakeToken, user: { id: user.id, role: user.role, email: user.email } };
   });
 
+  server.post("/auth/register", (schema, request) => {
+    const { email } = JSON.parse(request.requestBody);
+    const user = schema.db.users.findBy({ email });
+
+    if (user) {
+      return new Response(404, {}, { 
+        error: "Este e-mail já possui uma conta. Faça o login para jogar conosco!" 
+      });
+    }
+
+    return new Response(200);    
+  });
+
   server.get("/auth/profile", (schema, request) => {
     const user = requireAuth(schema, request);
     if (user instanceof Response) return user;
