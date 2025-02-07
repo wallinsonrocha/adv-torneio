@@ -35,29 +35,31 @@ export function authRoutes(server) {
   server.get("/user/role", (schema, request) => {
     const token = request.requestHeaders["Authorization"];
     if (!token) {
-        return new Response(401, {}, { message: "Token não encontrado." });
+      return new Response(401, {}, { message: "Token não encontrado." });
     }
 
 
     // Recupera o token
     const tokenValue = token.split(" ")[1]; // 'Bearer <token>'
-    const [ , , userId, role] = tokenValue.split("-");
+    const [, , userId, role] = tokenValue.split("-");
 
     // Verifica se o usuário existe no banco de dados simulado
     const user = schema.db.users.find(userId);
     if (!user || !role) {
-        return new Response(401, {}, { message: "Token inválido ou usuário não encontrado." });
+      return new Response(401, {}, { message: "Token inválido ou usuário não encontrado." });
     }
 
     // Retorna o papel do usuário
     return { role };
-});
+  });
 
+  server.post("/auth/logout", (schema, request) => {
+    const token = request.requestHeaders["Authorization"];
+    if (!token) {
+      return new Response(401, {}, { message: "Token não encontrado." });
+    }
 
-  server.get("/auth/profile", (schema, request) => {
-    const user = requireAuth(schema, request);
-    if (user instanceof Response) return user;
-
-    return { id: user.id, role: user.role, email: user.email };
+    // Apenas retorna um status 200, pois não há necessidade de invalidar tokens no MirageJS
+    return new Response(200, {}, { message: "Logout realizado com sucesso." });
   });
 }

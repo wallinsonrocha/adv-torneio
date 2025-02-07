@@ -29,7 +29,7 @@ export function userRoutes(server) {
             return new Response(401, {}, { error: "Não autorizado. Token ausente." });
         }
 
-        let id = request.params.id;        
+        let id = request.params.id;
         let team = schema.db.teams.find(id);
 
         if (!team) {
