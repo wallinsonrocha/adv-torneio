@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
 import SearchBar from "@/app/components/search-bar/SearchBar";
@@ -6,6 +6,7 @@ import CardTorneio from "@/app/components/torneios/CardTorneio";
 
 export default function ListTournament() {
     const [torneios, setTorneios] = useState([]);
+    const [filteredTorneios, setFilteredTorneios] = useState([]);
 
     useEffect(() => {
         async function fetchTorneios() {
@@ -14,6 +15,7 @@ export default function ListTournament() {
                 const response = await fetch(`${urlEnv}/api/torneios`);
                 const data = await response.json();
                 setTorneios(data);
+                setFilteredTorneios(data); // Inicialmente, mostrar todos os torneios
             } catch (error) {
                 console.error("Erro ao buscar torneios:", error);
             }
@@ -22,11 +24,18 @@ export default function ListTournament() {
         fetchTorneios();
     }, []);
 
+    const handleSearch = (query: string) => {
+        const filtered = torneios.filter((torneio: any) =>
+            torneio.nome.toLowerCase().includes(query.toLowerCase())
+        );
+        setFilteredTorneios(filtered);
+    };
+
     return (
         <section className="flex flex-col items-center p-6 bg-gray-100 min-h-screen">
             <div className="container max-w-screen-xl bg-white shadow-md rounded-2xl p-6">
                 {/* Barra de busca */}
-                <SearchBar />
+                <SearchBar onSearch={handleSearch} placeholder="Buscar torneios..." />
 
                 {/* Torneios */}
                 <div className="mt-6 space-y-8">
@@ -34,9 +43,9 @@ export default function ListTournament() {
                     <div>
                         <h2 className="text-2xl font-semibold text-gray-800 mb-4">Torneios Abertos</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {torneios
-                                .filter((torneio:any) => torneio.status === "Inscrições abertas")
-                                .map((torneio:any) => (
+                            {filteredTorneios
+                                .filter((torneio: any) => torneio.status === "Inscrições abertas")
+                                .map((torneio: any) => (
                                     <CardTorneio key={torneio.id} torneio={torneio} />
                                 ))}
                         </div>
@@ -49,9 +58,9 @@ export default function ListTournament() {
                     <div>
                         <h2 className="text-2xl font-semibold text-gray-800 mb-4">Torneios em andamento</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {torneios
-                                .filter((torneio:any) => torneio.status === "Em andamento")
-                                .map((torneio:any) => (
+                            {filteredTorneios
+                                .filter((torneio: any) => torneio.status === "Em andamento")
+                                .map((torneio: any) => (
                                     <CardTorneio key={torneio.id} torneio={torneio} />
                                 ))}
                         </div>
@@ -61,9 +70,9 @@ export default function ListTournament() {
                     <div>
                         <h2 className="text-2xl font-semibold text-gray-800 mb-4">Torneios finalizados</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {torneios
-                                .filter((torneio:any) => torneio.status === "Finalizado")
-                                .map((torneio:any) => (
+                            {filteredTorneios
+                                .filter((torneio: any) => torneio.status === "Finalizado")
+                                .map((torneio: any) => (
                                     <CardTorneio key={torneio.id} torneio={torneio} />
                                 ))}
                         </div>
