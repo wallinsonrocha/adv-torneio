@@ -1,6 +1,6 @@
 # Descrição
 
-Este projeto utiliza **MirageJS** para simular requisições de API durante o desenvolvimento. Algumas rotas são dependentes de autenticação e podem ser acessadas somente se o usuário estiver logado. No entanto, é importante observar que o **MirageJS** não funciona em ambiente de produção, portanto, essas funcionalidades estão disponíveis apenas no modo de desenvolvimento.
+Este projeto utiliza **MirageJS** para simular requisições de API durante o desenvolvimento. Algumas rotas são dependentes de autenticação e, para melhor experiência, o usuário deve estar logado. No entanto, é importante observar que o **MirageJS** não funciona em ambiente de produção, portanto, essas funcionalidades estão disponíveis apenas no modo de desenvolvimento.
 
 ## Informações Importantes
 
