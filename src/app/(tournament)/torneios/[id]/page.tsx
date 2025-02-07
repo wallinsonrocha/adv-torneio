@@ -7,6 +7,7 @@ import TeamCardTourn from "@/app/components/torneios/TeamCardTourn";
 import MatchCard from "@/app/components/torneios/MatchCard";
 import { useParams } from "next/navigation";
 import Ranking from "@/app/components/torneios/Raking";
+import ActionButtonRole from "@/app/components/torneios/ActionButtonRole";
 
 const urlEnv = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -33,7 +34,6 @@ export default function InfoTournament() {
                 }
 
                 const data = await response.json();
-                console.log(data)
                 setTournament(data);
             } catch (error) {
                 console.error("Erro ao buscar torneio.", error);
@@ -131,11 +131,7 @@ export default function InfoTournament() {
             </div>
 
             {/* Botão de inscrição */}
-            <div className="mt-6 text-center">
-                <Link href="/inscricao" className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition">
-                    Inscrever-se
-                </Link>
-            </div>
+            <ActionButtonRole/>
         </section>
     );
 }

@@ -6,8 +6,8 @@ export function authRoutes(server) {
     const user = schema.db.users.findBy({ email });
 
     if (!user) {
-      return new Response(404, {}, { 
-        error: "Este e-mail ainda não está cadastrado. Que tal criar uma conta?" 
+      return new Response(404, {}, {
+        error: "Este e-mail ainda não está cadastrado. Que tal criar uma conta?"
       });
     }
 
@@ -24,13 +24,35 @@ export function authRoutes(server) {
     const user = schema.db.users.findBy({ email });
 
     if (user) {
-      return new Response(404, {}, { 
-        error: "Este e-mail já possui uma conta. Faça o login para jogar conosco!" 
+      return new Response(404, {}, {
+        error: "Este e-mail já possui uma conta. Faça o login para jogar conosco!"
       });
     }
 
-    return new Response(200);    
+    return new Response(200);
   });
+
+  server.get("/user/role", (schema, request) => {
+    const token = request.requestHeaders["Authorization"];
+    if (!token) {
+        return new Response(401, {}, { message: "Token não encontrado." });
+    }
+
+
+    // Recupera o token
+    const tokenValue = token.split(" ")[1]; // 'Bearer <token>'
+    const [ , , userId, role] = tokenValue.split("-");
+
+    // Verifica se o usuário existe no banco de dados simulado
+    const user = schema.db.users.find(userId);
+    if (!user || !role) {
+        return new Response(401, {}, { message: "Token inválido ou usuário não encontrado." });
+    }
+
+    // Retorna o papel do usuário
+    return { role };
+});
+
 
   server.get("/auth/profile", (schema, request) => {
     const user = requireAuth(schema, request);
