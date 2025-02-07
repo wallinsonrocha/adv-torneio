@@ -39,14 +39,14 @@ export default function ActionButtonRole() {
         <div className="mt-6 text-center">
             {role === "captain" ? (
                 <Link
-                    href="/inscricao"
+                    href="#"
                     className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition"
                 >
                     Inscrever-se
                 </Link>
             ) : role === "admin" ? (
                 <Link
-                    href="/editar-torneio"
+                    href="#"
                     className="px-6 py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition"
                 >
                     Editar

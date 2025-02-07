@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import TeamCardTourn from "@/app/components/torneios/TeamCardTourn";
 import MatchCard from "@/app/components/torneios/MatchCard";
 import { useParams } from "next/navigation";
 import Ranking from "@/app/components/torneios/Raking";
 import ActionButtonRole from "@/app/components/torneios/ActionButtonRole";
+import TeamDetailModal from "@/app/components/torneios/TeamDetailModal";
 
 const urlEnv = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -15,8 +15,11 @@ export default function InfoTournament() {
     const [tab, setTab] = useState("teams"); // Controle de abas (times / partidas / ranking)
     const [tournament, setTournament] = useState<any>(null); // Estado para armazenar o torneio    
     const [loading, setLoading] = useState(true);
+    const [selectedIdTeam, setSelectedIdTeam] = useState<string | null>(null); // Estado para armazenar o time selecionado
+    const [isModalOpen, setIsModalOpen] = useState(false); // Controle do modal
     const params = useParams();
 
+    // UseEffect para a requisução
     useEffect(() => {
         // Conexão com Backend
         const fetchTournament = async () => {
@@ -25,8 +28,8 @@ export default function InfoTournament() {
                 const response = await fetch(url, {
                     method: "GET",
                     headers: {
-                        "Content-Type": "application/json",                        
-                    },                    
+                        "Content-Type": "application/json",
+                    },
                 });
 
                 if (!response.ok) {
@@ -43,7 +46,16 @@ export default function InfoTournament() {
         };
 
         fetchTournament();
-    }, [params]);    
+    }, [params]);
+
+    // UseEffect para o modal
+    useEffect(() => {
+        if (selectedIdTeam == null) {
+            return setIsModalOpen(false)
+        }
+
+        setIsModalOpen(true);        
+    }, [selectedIdTeam])
 
     if (loading) {
         return <p className="text-center text-gray-600">Carregando torneio...</p>;
@@ -109,7 +121,7 @@ export default function InfoTournament() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {tournament.timesParticipantes?.length > 0 ? (
                             tournament.timesParticipantes.map((team: any, index: number) => (
-                                <TeamCardTourn props={{...team}} key={index} />
+                                <TeamCardTourn team={{ ...team }} setSelectedTeam={setSelectedIdTeam} key={index} />
                             ))
                         ) : (
                             <p className="text-gray-600">Nenhum time inscrito.</p>
@@ -119,7 +131,7 @@ export default function InfoTournament() {
                     <div className="space-y-4">
                         {tournament.partidas.length > 0 ? (
                             tournament.partidas.map((match: any, index: any) => (
-                                <MatchCard key={index} match={{...match}} />
+                                <MatchCard key={index} match={{ ...match }} />
                             ))
                         ) : (
                             <p className="text-gray-600">Nenhuma partida agendada.</p>
@@ -131,7 +143,17 @@ export default function InfoTournament() {
             </div>
 
             {/* Botão de inscrição */}
-            <ActionButtonRole/>
+            <ActionButtonRole />
+
+            {/* Modal de detalhes do time */}
+            {selectedIdTeam !== null && selectedIdTeam !== "" && (
+                <TeamDetailModal
+                    isOpen={isModalOpen}
+                    onClose={() => setSelectedIdTeam(null)}
+                    selectedTeamId={selectedIdTeam}
+                />
+            )}
+
         </section>
     );
 }

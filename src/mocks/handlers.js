@@ -1,5 +1,6 @@
 import { createServer, Model, Factory } from "miragejs";
-import { TournamentFactory } from '@/mocks/factories';
+import {TournamentFactory} from './factories/TournamentFactory'
+import {TeamFactory} from './factories/TeamFactoy'
 import { authRoutes } from "./routes/authRoutes";
 import { userRoutes } from "./routes/userRoutes";
 
@@ -8,15 +9,18 @@ export function makeServer({environment="development"}={}) {
     environment,
 
     models: {
+      teams: Model,
       tournaments: Model,
     },
 
     factories: {
-      ...TournamentFactory
+      ...TeamFactory,
+      ...TournamentFactory,
     },
 
     seeds(server) {
       server.createList("tournament", 20);
+      server.createList("team", 40);
       server.db.loadData({
         users: [
           { id: "1", role: "user", email: "user@email.com", password: "@Senha123" },
